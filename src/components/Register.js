@@ -24,6 +24,8 @@ function Register() {
   const [fileURL, setFileURL] = useState(null);
   const [pwdType, setPwdType] = useState("password");
 
+  const [updated, setUpdated] = useState(false);
+
   const nav = useNavigation();
   const sending = nav.state === "submitting";
 
@@ -45,19 +47,19 @@ function Register() {
         await uploadBytes(path, compressedImage);
         const url = await getDownloadURL(path);
         setDpURL(url);
+        setUpdated(true);
       };
 
-      uploadImage();
+      DP ? uploadImage() : setUpdated(true);
     }
   }, [data, dispatch]);
 
   useEffect(() => {
-    if (dpURL) {
+    if (updated) {
       const fullUserData = { ...data.userData, profilePictureURL: dpURL };
-      console.log(dpURL);
       dispatch(userActions.addUser(fullUserData));
     }
-  }, [dpURL, dispatch]);
+  }, [updated, dispatch]);
 
   useEffect(() => {
     if (userState.changedUsers === true) {
