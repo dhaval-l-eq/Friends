@@ -8,7 +8,6 @@ const userSlice = createSlice({
   name: "users",
   initialState: {
     users: [],
-    usersPath: null,
     authUser: null,
     changedUsers: false,
   },
@@ -25,6 +24,7 @@ const userSlice = createSlice({
         birthDate: newUser.birthDate,
         phoneNumber: newUser.phoneNumber || null,
         friends: [],
+        friendRequests: [],
         profilePicture: newUser.profilePictureURL || null,
       });
 
@@ -39,7 +39,6 @@ const userSlice = createSlice({
       const authEmail = payload;
 
       state.authUser = state.users.find((user) => user.email === authEmail);
-      window.localStorage.setItem("authUserEmail", authEmail);
     },
 
     resetChange(state) {
@@ -50,8 +49,34 @@ const userSlice = createSlice({
       state.authUser = null;
     },
 
-    addUsersPath(state, { payload }) {
-      state.usersPath = payload;
+    sendFriendRequest(state, { payload }) {
+      const friendIndex = state.users.findIndex(
+        (user) => payload.friendId === user.id
+      );
+
+      if (!state.users[friendIndex].friendRequests)
+        state.users[friendIndex].friendRequests = [];
+
+      state.users[friendIndex].friendRequests.push({
+        userId: payload.userId,
+        userName: payload.userName,
+        userDp: payload.userDp,
+      });
+      state.changedUsers = true;
+    },
+
+    undoFriendRequest(state, { payload }) {
+      const friendIndex = state.users.findIndex(
+        (user) => payload.friendId === user.id
+      );
+
+      const friendRequests = state.users[friendIndex].friendRequests;
+
+      const requestIndex = friendRequests.findIndex(
+        (request) => request.userId === payload.userId
+      );
+      friendRequests.splice(requestIndex, 1);
+      state.changedUsers = true;
     },
   },
 });

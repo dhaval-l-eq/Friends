@@ -1,9 +1,9 @@
 import { Form, Link, useActionData, useNavigation } from "react-router-dom";
 import Button from "../UI/Button";
 import classes from "./Register.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import { sendUserData, userActions } from "../store/user-slice";
+import { userActions } from "../store/user-slice";
 import userImage from "../images/user.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -30,7 +30,6 @@ function Register() {
   const sending = nav.state === "submitting";
 
   const dispatch = useDispatch();
-  const userState = useSelector((state) => state.users);
 
   useEffect(() => {
     if (data && data.userData) {
@@ -60,13 +59,6 @@ function Register() {
       dispatch(userActions.addUser(fullUserData));
     }
   }, [updated, dispatch]);
-
-  useEffect(() => {
-    if (userState.changedUsers === true) {
-      dispatch(sendUserData(userState.users));
-      dispatch(userActions.resetChange());
-    }
-  }, [userState, dispatch]);
 
   function uploadImageHandler() {
     uploadDP.current.click();
