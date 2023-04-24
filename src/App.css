@@ -1,0 +1,34 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-primary: #f9f9f9;
+  --bg-secondary: #180a0a;
+  --color-primary: #711a75;
+  --color-secondary: #f10086;
+  --color-complementary: #f582a7;
+
+  --color-faded: #f582a774;
+  --color-faded-1: #180a0a73;
+
+  --text-primary: #000000;
+  --text-white: #ffffff;
+
+  --gradient-primary: linear-gradient(to top left, #701a754f, #f100853f);
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: "Ubuntu", sans-serif;
+}
+
+.App {
+  width: 100%;
+}
