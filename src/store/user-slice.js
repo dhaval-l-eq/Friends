@@ -70,14 +70,40 @@ const userSlice = createSlice({
         (user) => payload.friendId === user.id
       );
 
-      const friendRequests = state.users[friendIndex].friendRequests;
+      const friendRequests = state.users[friendIndex].friendRequests.slice();
 
       const requestIndex = friendRequests.findIndex(
         (request) => request.userId === payload.userId
       );
       friendRequests.splice(requestIndex, 1);
+      state.users[friendIndex].friendRequests = friendRequests;
       state.changedUsers = true;
     },
+
+    addFriend(state, {payload}) {
+
+      const authUser = state.users.find(user => user.id === state.authUser.id);
+
+      if(!authUser.friends) authUser.friends = [];
+
+      authUser.friends.push(payload);
+      state.changedUsers = true;
+
+      const friendToAdd = state.users.find(user => user.id === payload);
+      if(!friendToAdd.friends) friendToAdd.friends = [];
+      friendToAdd.friends.push(state.authUser.id);
+    },
+
+    removeFriend(state, {payload}) {
+      const friend = state.users.find(user => user.id === payload.friendId);
+      const user = state.users.find(user => user.id === payload.userId);
+
+      const friendOfUserIndex = user.friends.find(friend => friend === payload.friendId);
+      const friendOfFriendIndex = user.friends.find(friend => friend === payload.userId);
+
+      friend.friends.splice(friendOfFriendIndex,1);
+      user.friends.splice(friendOfUserIndex,1);
+    }
   },
 });
 

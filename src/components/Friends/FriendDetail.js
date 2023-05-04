@@ -1,9 +1,8 @@
-import { faCheck, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faUserPlus, faX } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../../UI/Button";
 import ProfilePicture from "../../UI/ProfilePicture";
-
 import classes from "./FriendDetail.module.css";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -18,7 +17,7 @@ function FriendDetail(props) {
     );
 
     if (sentAllready) setRequestSent(true);
-  }, []);
+  }, [props]);
 
   const dispatch = useDispatch();
 
@@ -58,18 +57,31 @@ function FriendDetail(props) {
         <ProfilePicture dp={props.dp} className={classes.dp} />
         <p>{props.userName}</p>
       </Link>
-      <Button
-        onClick={sendFriendRequestHandler}
-        className={
-          requestSent ? classes["btn-friend"] : classes["btn-add-friend"]
-        }
-      >
-        <FontAwesomeIcon
-          className={classes["icon-add"]}
-          icon={requestSent ? faCheck : faUserPlus}
-        />
-        {requestSent ? "Request Sent" : "Add Friend"}
-      </Button>
+      {props.isFriend ? (
+        <Button
+          onClick={props.onRemoveFriend}
+          className={classes["btn-remove-friend"]}
+        >
+          <FontAwesomeIcon
+            className={classes["icon-add"]}
+            icon={faX}
+          />
+          Remove Friend
+        </Button>
+      ) : (
+        <Button
+          onClick={sendFriendRequestHandler}
+          className={
+            requestSent ? classes["btn-friend"] : classes["btn-add-friend"]
+          }
+        >
+          <FontAwesomeIcon
+            className={classes["icon-add"]}
+            icon={requestSent ? faCheck : faUserPlus}
+          />
+          {requestSent ? "Request Sent" : "Add Friend"}
+        </Button>
+      )}
     </li>
   );
 }

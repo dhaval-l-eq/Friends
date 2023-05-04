@@ -31,6 +31,16 @@
   font-size: 1rem;
 }
 
+.btn-remove-friend {
+  background-color: transparent;
+  padding: 12px;
+  width: fit-content;
+}
+
+.btn-remove-friend:hover {
+  background-color: var(--color-complementary);
+}
+
 .icon-add {
   margin-right: 10px;
 }

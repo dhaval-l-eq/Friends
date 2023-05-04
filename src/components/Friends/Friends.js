@@ -1,20 +1,34 @@
 import { useSelector } from "react-redux";
 import classes from "./FindFriends.module.css";
 import FriendRequestDetail from "./FriendRequestDetail";
+import FriendDetailWrapper from "./FriendDetailWrapper";
 
 function Friends() {
-  const authUser = useSelector((state) => state.users.authUser);
-  const friendRequests = authUser.friendRequests || null;
+  const users = useSelector((state) => state.users.users);
+  const authUser = useSelector(state => state.users.authUser);
+  const authUserToDisplay = users.find(user => user.id === authUser.id);
 
+  const usersToDisplay = users.find((user) => user.id === authUserToDisplay.id);
+  const friendRequests = usersToDisplay.friendRequests || null;
+
+  const friends = authUserToDisplay.friends;
+  
   return (
     <>
       <section className={classes.container}>
         <h2>Your Friends</h2>
+        <ul>
+          {friends?.length > 0 ?
+            friends.map((friend) => (
+              <FriendDetailWrapper key={friend} userId={friend} isFriend={true} />
+            )) : 
+            <p>No friends found. Time to add some friends 😊</p>}
+        </ul>
       </section>
 
       <section className={classes.container}>
         <h2>Friend Requests</h2>
-        {friendRequests && (
+        {friendRequests?.length > 0 ? (
           <ul>
             {friendRequests.map((request) => (
               <FriendRequestDetail
@@ -25,7 +39,8 @@ function Friends() {
               />
             ))}
           </ul>
-        )}
+        ) : 
+        <p>No Friend Requests</p>}
       </section>
     </>
   );
