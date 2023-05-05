@@ -19,7 +19,7 @@ function FriendDetailWrapper(props) {
     }
 
   return (
-    <FriendDetail id={userToDisplay.id} dp={userToDisplay.dp || userImage} onRemoveFriend={removeFriendHandler} userName={userToDisplay.userName} isFriend={true} />
+    <FriendDetail id={userToDisplay.id} dp={userToDisplay.profilePicture || userImage} onRemoveFriend={removeFriendHandler} userName={userToDisplay.userName} isFriend={true} />
   )
 }
 

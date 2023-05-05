@@ -4,12 +4,18 @@ import FriendDetail from "./FriendDetail";
 
 import classes from "./FindFriends.module.css";
 
-function FindFriends() { 
+function FindFriends() {
   const users = useSelector((state) => state.users.users);
-  const authUser = useSelector(state => state.users.authUser);
-  const authUserToDisplay = users.find(user => user.id === authUser.id);
+  const authUser = useSelector((state) => state.users.authUser);
+  const authUserToDisplay = users.find((user) => user.id === authUser.id);
   const friends = authUserToDisplay.friends;
-  const usersToDisplay = users.filter((user) => user.id !== authUserToDisplay.id && !friends?.find(friend => friend === user.id));
+  const friendRequests = authUserToDisplay.friendRequests;
+  const usersToDisplay = users.filter(
+    (user) =>
+      user.id !== authUserToDisplay.id &&
+      !friends?.find((friend) => friend === user.id) &&
+      !friendRequests?.find((request) => request.userId === user.id)
+  );
 
   return (
     <section className={classes.container}>
